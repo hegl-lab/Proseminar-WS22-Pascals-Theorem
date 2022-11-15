@@ -10,7 +10,7 @@ export const HEIGHT = 500;
 // points on the conic
 let points = [];
 // point that is currently being dragged, or null if none is being dragged
-let dragging = null;
+export let dragging = null;
 
 // finds the nearest points from the list points based on the euclidean norm
 function findNearestPoint(src_point) {
@@ -160,11 +160,13 @@ function draw() {
 
 // checks if a point is selected and switches it into "dragging-mode"
 function mousePressed(event) {
-    console.log(event.path[0].className);
-    if (event.path[0].className === 'p5Canvas' && event.button === 0 && shape !== null) {
-        console.log('HI');
+    if (event.force || (event.path[0].className === 'p5Canvas' && event.button === 0 && shape !== null)) {
         let [mouse_x, mouse_y] = mouse_position();
         let point = shape.nearest_point_on_shape(mouse_x, mouse_y);
+        if (event.force) {
+            if (point.distance(mouse_x, mouse_y) > 50) return;
+        }
+
         let nearest = findNearestPoint(point);
         if (nearest.distance_to_point(point) <= 50 / SCALE_FACTOR) {
             dragging = nearest;

@@ -1,4 +1,4 @@
-import {WIDTH, HEIGHT} from "./pascals_theorem.js";
+import {WIDTH, HEIGHT, dragging} from "./pascals_theorem.js";
 
 export let SCALE_FACTOR = 1.0;
 let window_move = [0, 0];
@@ -33,11 +33,40 @@ function mouseWheel(event) {
 }
 
 function mouseDragged(event) {
-    if (event.buttons === 4) {
+    if (event.buttons === 4 || dragging === null) {
         window_move[0] += event.movementX / SCALE_FACTOR;
         window_move[1] += event.movementY / SCALE_FACTOR;
     }
+
+}
+
+let touch_position;
+
+function touchStarted() {
+    touch_position = [mouseX, mouseY];
+
+    window.mousePressed({force: true});
+
+    return false;
+}
+
+function touchMoved() {
+    if (dragging === null) {
+        window_move[0] += (mouseX - touch_position[0]) / SCALE_FACTOR;
+        window_move[1] += (mouseY - touch_position[1]) / SCALE_FACTOR;
+
+        touch_position = [mouseX, mouseY];
+    }
+
+    return false;
+}
+
+function touchEnded() {
+    window.mouseReleased();
 }
 
 window.mouseWheel = mouseWheel;
 window.mouseDragged = mouseDragged;
+window.touchMoved = touchMoved;
+window.touchStarted = touchStarted;
+window.touchEnded = touchEnded;
