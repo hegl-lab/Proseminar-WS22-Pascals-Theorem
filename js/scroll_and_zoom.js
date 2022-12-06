@@ -5,6 +5,7 @@ let window_move = [0, 0];
 
 export function scale_and_translate() {
     scale(SCALE_FACTOR, SCALE_FACTOR);
+    strokeWeight(1 / SCALE_FACTOR);
     translate(window_move[0], window_move[1]);
 }
 
