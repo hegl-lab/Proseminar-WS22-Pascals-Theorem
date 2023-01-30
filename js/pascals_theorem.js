@@ -4,13 +4,14 @@ import {Point} from "./point.js";
 
 import {createSettings} from "./settings.js";
 
-export const WIDTH = 500;
-export const HEIGHT = 500;
+export const WIDTH = 750;
+export const HEIGHT = 750;
 
 // points on the conic
 let points = [];
 // point that is currently being dragged, or null if none is being dragged
 export let dragging = null;
+export let dragging_outer = false;
 
 // finds the nearest points from the list points based on the euclidean norm
 function findNearestPoint(src_point) {
@@ -117,7 +118,7 @@ function setup() {
 
 function draw() {
     if (shape === null) return;
-    background(220);
+    background(255);
 
     translate(WIDTH / 2, HEIGHT / 2);
     scale_and_translate();
@@ -160,7 +161,8 @@ function draw() {
 
 // checks if a point is selected and switches it into "dragging-mode"
 function mousePressed(event) {
-    if (event.force || (event.path[0].className === 'p5Canvas' && event.button === 0 && shape !== null)) {
+    if (event.force || (event.target.className === 'p5Canvas' && event.button === 0 && shape !== null)) {
+        if (mouseX < 0 || mouseX > WIDTH || mouseY < 0 || mouseY > HEIGHT) return;
         let [mouse_x, mouse_y] = mouse_position();
         let point = shape.nearest_point_on_shape(mouse_x, mouse_y);
         if (event.force) {
@@ -170,13 +172,20 @@ function mousePressed(event) {
         let nearest = findNearestPoint(point);
         if (nearest.distance_to_point(point) <= 50 / SCALE_FACTOR) {
             dragging = nearest;
+        } else {
+            dragging_outer = true;
         }
+    } else if (event.button === 1) {
+        if (mouseX < 0 || mouseX > WIDTH || mouseY < 0 || mouseY > HEIGHT) return;
+        dragging_outer = true;
     }
+    console.log(event.button);
 }
 
 // stops dragging points
 function mouseReleased() {
     dragging = null;
+    dragging_outer = false;
 }
 
 // set window method so p5.js knows which methods to call

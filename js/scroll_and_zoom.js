@@ -1,4 +1,4 @@
-import {WIDTH, HEIGHT, dragging} from "./pascals_theorem.js";
+import {WIDTH, HEIGHT, dragging, dragging_outer} from "./pascals_theorem.js";
 
 export let SCALE_FACTOR = 1.0;
 let window_move = [0, 0];
@@ -24,6 +24,8 @@ export function position_range() {
 }
 
 function mouseWheel(event) {
+    if (mouseX < 0 || mouseX > WIDTH || mouseY < 0 || mouseY > HEIGHT) return;
+
     let delta = event.delta;
     if (delta < 0) {
         SCALE_FACTOR *= 1.1;
@@ -34,7 +36,7 @@ function mouseWheel(event) {
 }
 
 function mouseDragged(event) {
-    if (event.buttons === 4 || dragging === null) {
+    if (dragging === null && dragging_outer) {
         window_move[0] += event.movementX / SCALE_FACTOR;
         window_move[1] += event.movementY / SCALE_FACTOR;
     }

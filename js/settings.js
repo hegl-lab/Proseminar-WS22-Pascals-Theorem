@@ -58,7 +58,7 @@ function updateShape() {
 }
 
 export function createSettings() {
-    settings = QuickSettings.create(520, 20, 'Settings');
+    settings = QuickSettings.create(WIDTH + 20, 20, 'Settings');
     settings.addDropDown('Shape', [
         'Ellipse', 'Parabola', 'Hyperbola'
     ], updateShape);
