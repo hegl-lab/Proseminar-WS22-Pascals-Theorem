@@ -59,9 +59,14 @@ function updateShape() {
 
 export function createSettings() {
     settings = QuickSettings.create(WIDTH + 20, 20, 'Settings');
+    settings.addHTML("Select a shape",
+        "In the following dropdown menu, you can select the conic you want the visualization to run on.");
     settings.addDropDown('Shape', [
         'Ellipse', 'Parabola', 'Hyperbola'
     ], updateShape);
+    settings.addHTML("Modify shape",
+        "Bellow the dropdown menu you can find different parameters that you can change to modify the shape of conic." +
+        "<br>By dragging the points on the conic you can change their position and updated the Pascal line." +
+        "<br>Using your mousewheel you can zoom in and out.")
     updateShape();
-    console.log(settings);
 }

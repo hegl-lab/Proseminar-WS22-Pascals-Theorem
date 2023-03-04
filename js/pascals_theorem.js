@@ -179,7 +179,6 @@ function mousePressed(event) {
         if (mouseX < 0 || mouseX > WIDTH || mouseY < 0 || mouseY > HEIGHT) return;
         dragging_outer = true;
     }
-    console.log(event.button);
 }
 
 // stops dragging points
